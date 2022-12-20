@@ -1,0 +1,1 @@
+# um funcionario verifica e aceita a solicitação
