@@ -60,3 +60,6 @@ module.exports = {
     "test": "jest"
   },
 ```
+
+referência de status para consulta:
+(https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status)
