@@ -1,4 +1,4 @@
-## Gerente deve ser capaz de aceitar ou aceitar a porcessamento do funcionário
+## Gerente deve ser capaz de aceitar ou rejeitar a porcessamento do funcionário
 
 - Recebe solicitação do controller
 - Valida a solicitação e funcionário
