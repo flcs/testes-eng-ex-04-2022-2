@@ -3,7 +3,7 @@ interface IRepositorySolicitation {
 }
 
 class InMemorySolicitationRepository {
-  
+
 }
 
 interface IUseCase<Input, Output> {
@@ -14,9 +14,13 @@ type CreateSolicitationInput = {
   title: string
 }
 
+type SolicitationStatus = 'Opened' | 'Pending'
+
 type CreateSolicitationOutput = {
-  id: number
+  id: string
   title: string
+  createdAt: Date
+  status: SolicitationStatus
 }
 
 class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolicitationOutput>{
@@ -26,8 +30,13 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
     this.repository = repository
   }
 
-  perform(input: CreateSolicitationInput): Promise<CreateSolicitationOutput> {
-    throw new Error('Method not implemented.')
+  async perform(input: CreateSolicitationInput): Promise<CreateSolicitationOutput> {
+    return {
+      id: '0',
+      title: input.title,
+      createdAt: new Date(),
+      status: 'Opened'
+    }
   }
 }
 
