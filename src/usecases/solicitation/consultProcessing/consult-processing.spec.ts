@@ -23,20 +23,36 @@ class ConsultProcessing implements IUseCase<ConsultProcessingInput,ConsultProces
     if(input.solicitationID.length === 0) throw new Error("Invalid ID")
     const solicitation = await this.repository.findById(input.solicitationID)
     if(!solicitation) throw new Error("Solicitation not found")
+    const solicitationCalculationResult = solicitation.getCost()
     return {
-      solicitationCalculationResult: 1000
+      solicitationCalculationResult
     }
   }
 }
 
 describe('Use Case - Consultar Processamento', () => {
   it('deveria retornar o calculo da solicitação', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
     const solicitationCost = 1000
     const createSolicitationInput: CreateSolicitationInput = {
       title: "Reparo jardim",
       cost: solicitationCost
     }
+    const createSolicitation = new CreateSolicitation(inMemorySolicitationRepository)
+    await createSolicitation.perform(createSolicitationInput)
+    const sut = new ConsultProcessing(inMemorySolicitationRepository)
+    const consultProcessingInput = { solicitationID: '0' }
+    const output = await sut.perform(consultProcessingInput)
+    expect(output.solicitationCalculationResult).toBe(solicitationCost)
+  })
+
+  it('deveria retornar o calculo da solicitação sendo o custo 2000', async () => {
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const solicitationCost = 2000
+    const createSolicitationInput: CreateSolicitationInput = {
+      title: "Reparo jardim",
+      cost: solicitationCost
+    }
     const createSolicitation = new CreateSolicitation(inMemorySolicitationRepository)
     await createSolicitation.perform(createSolicitationInput)
     const sut = new ConsultProcessing(inMemorySolicitationRepository)

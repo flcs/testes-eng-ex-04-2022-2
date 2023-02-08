@@ -17,7 +17,7 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
     const solicitationID = (await this.repository.count()).toString()
     const createdAt = new Date()
     const status: SolicitationStatus = 'Opened'
-    const solicitation = new Solicitation(solicitationID, input.title, createdAt, status)
+    const solicitation = new Solicitation(solicitationID, input.title, createdAt, status, input.cost)
     await this.repository.create(solicitation)
     return {
       id: solicitation.getID(),
