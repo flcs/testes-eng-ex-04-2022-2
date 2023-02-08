@@ -1,9 +1,9 @@
 import { Console } from "console";
 import e from "express";
 import { json } from "stream/consumers";
-import { Service, Status } from "./Domain/Service";
+import { Service, Status } from "../Domain/Service";
 import { EmployeeRequestProcessor } from "./EmployeeRequestProcessor"
-import { FakeRepo, IRepository } from "./Repo/repository";
+import { FakeRepo, IRepository } from "../Repo/repository";
 
 class ClientTestUtility{
     public static clientNames = [

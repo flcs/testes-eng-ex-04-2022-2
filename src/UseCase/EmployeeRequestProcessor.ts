@@ -1,5 +1,5 @@
-import { Service, Status } from "./Domain/Service";
-import { IRepository } from "./Repo/repository";
+import { Service, Status } from "../Domain/Service";
+import { IRepository } from "../Repo/repository";
 
 interface IEmployeeRequestProcessor{
     VerifyRequest(employeeID:number,serviceId:number,repository:IRepository):string
