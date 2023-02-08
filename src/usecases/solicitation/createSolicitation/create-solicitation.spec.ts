@@ -30,4 +30,11 @@ describe('Use Case - Criar Solicitação', () => {
     const input1 = { title: "" }
     await expect(sut.perform(input1)).rejects.toThrow("Invalid input")
   })
+
+  it('deveria levantar uma exceção se o titúlo da solicitação conter apenas espaços', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const sut = new CreateSolicitation(inMemorySolicitationRepository)
+    const input1 = { title: " " }
+    await expect(sut.perform(input1)).rejects.toThrow("Invalid input")
+  })
 })

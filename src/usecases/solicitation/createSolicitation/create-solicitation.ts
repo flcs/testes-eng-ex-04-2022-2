@@ -29,7 +29,7 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
 
   private isInputValid(input: CreateSolicitationInput): boolean {
     const { title } = input
-    const isTitleEmpty = title.length !== 0
+    const isTitleEmpty = (title.trim()).length !== 0
     return isTitleEmpty
   }
 }
