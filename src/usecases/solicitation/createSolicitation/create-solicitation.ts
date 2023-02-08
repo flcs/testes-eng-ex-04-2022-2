@@ -13,6 +13,7 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
   }
 
   async perform(input: CreateSolicitationInput): Promise<CreateSolicitationOutput> {
+    if(!this.isInputValid(input)) throw new Error("Invalid input")
     const solicitationID = (await this.repository.count()).toString()
     const createdAt = new Date()
     const status: SolicitationStatus = 'Opened'
@@ -24,6 +25,12 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
       createdAt: solicitation.getCreatedAt(),
       status: solicitation.getStatus()
     }
+  }
+
+  private isInputValid(input: CreateSolicitationInput): boolean {
+    const { title } = input
+    const isTitleEmpty = title.length !== 0
+    return isTitleEmpty
   }
 }
 

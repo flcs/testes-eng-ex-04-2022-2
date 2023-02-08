@@ -20,8 +20,14 @@ describe('Use Case - Criar Solicitação', () => {
     const input2 = { title: "Reparo da porta de vidro" }
     const output1 = await sut.perform(input1)
     const output2 = await sut.perform(input2)
-
     expect(output1.id).toBe('0')
     expect(output2.id).toBe('1')
+  })
+
+  it('deveria levantar uma exceção se o titúlo da solicitação estiver vazio', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const sut = new CreateSolicitation(inMemorySolicitationRepository)
+    const input1 = { title: "" }
+    await expect(sut.perform(input1)).rejects.toThrow("Invalid input")
   })
 })
