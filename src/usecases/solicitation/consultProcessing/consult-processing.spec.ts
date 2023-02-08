@@ -20,6 +20,7 @@ class ConsultProcessing implements IUseCase<ConsultProcessingInput,ConsultProces
   async perform(input: ConsultProcessingInput): Promise<ConsultProcessingOutput> {
     if(input.solicitationID.length === 0) throw new Error("Invalid ID")
     const solicitation = await this.repository.findById(input.solicitationID)
+    if(!solicitation) throw new Error("Solicitation not found")
     return {
       solicitationCalculationResult: 1000
     }
@@ -41,5 +42,12 @@ describe('Use Case - Consultar Processamento', () => {
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
     const input = { solicitationID: '' }
     await expect(sut.perform(input)).rejects.toThrow("Invalid ID")
+  })
+
+  it('deveria levantar uma exceção se o id não for encontrado na base de dados', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const sut = new ConsultProcessing(inMemorySolicitationRepository)
+    const input = { solicitationID: '1' }
+    await expect(sut.perform(input)).rejects.toThrow("Solicitation not found")
   })
 })
