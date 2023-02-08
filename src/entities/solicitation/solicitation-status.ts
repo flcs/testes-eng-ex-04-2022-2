@@ -1,3 +1,3 @@
-type SolicitationStatus = 'Opened' | 'Pending'
+type SolicitationStatus = 'Opened' | 'Pending' | 'Finished'
 
 export default SolicitationStatus

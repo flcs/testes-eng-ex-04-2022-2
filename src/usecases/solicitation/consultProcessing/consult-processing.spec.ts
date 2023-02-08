@@ -23,6 +23,7 @@ class ConsultProcessing implements IUseCase<ConsultProcessingInput,ConsultProces
     if(input.solicitationID.length === 0) throw new Error("Invalid ID")
     const solicitation = await this.repository.findById(input.solicitationID)
     if(!solicitation) throw new Error("Solicitation not found")
+    if(solicitation.getStatus() !== 'Finished') throw new Error("Solicitation not finished")
     const solicitationCalculationResult = solicitation.getCost()
     return {
       solicitationCalculationResult
@@ -42,6 +43,10 @@ describe('Use Case - Consultar Processamento', () => {
     await createSolicitation.perform(createSolicitationInput)
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
     const consultProcessingInput = { solicitationID: '0' }
+    /* ----- usecase 05 - set solicitation status to finished ----- */
+    const solicitation = await inMemorySolicitationRepository.findById(consultProcessingInput.solicitationID)
+    if(solicitation) solicitation.finishSolicitation()
+    /* ------------------------------------------------------------ */
     const output = await sut.perform(consultProcessingInput)
     expect(output.solicitationCalculationResult).toBe(solicitationCost)
   })
@@ -57,6 +62,10 @@ describe('Use Case - Consultar Processamento', () => {
     await createSolicitation.perform(createSolicitationInput)
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
     const consultProcessingInput = { solicitationID: '0' }
+    /* ----- usecase 05 - set solicitation status to finished ----- */
+    const solicitation = await inMemorySolicitationRepository.findById(consultProcessingInput.solicitationID)
+    if(solicitation) solicitation.finishSolicitation()
+    /* ------------------------------------------------------------ */
     const output = await sut.perform(consultProcessingInput)
     expect(output.solicitationCalculationResult).toBe(solicitationCost)
   })
@@ -73,5 +82,19 @@ describe('Use Case - Consultar Processamento', () => {
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
     const input = { solicitationID: '1' }
     await expect(sut.perform(input)).rejects.toThrow("Solicitation not found")
+  })
+
+  it('deveria levantar uma exceção se o status da solicitação não estiver finalizado', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const solicitationCost = 2000
+    const createSolicitationInput: CreateSolicitationInput = {
+      title: "Reparo jardim",
+      cost: solicitationCost
+    }
+    const createSolicitation = new CreateSolicitation(inMemorySolicitationRepository)
+    await createSolicitation.perform(createSolicitationInput)
+    const sut = new ConsultProcessing(inMemorySolicitationRepository)
+    const input = { solicitationID: '0' }
+    await expect(sut.perform(input)).rejects.toThrow("Solicitation not finished")
   })
 })

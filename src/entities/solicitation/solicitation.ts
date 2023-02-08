@@ -34,6 +34,10 @@ class Solicitation {
   getCost(): number {
     return this.cost
   }
+
+  finishSolicitation(): void {
+    this.status = 'Finished'
+  }
 }
 
 export default Solicitation
