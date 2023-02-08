@@ -1,5 +1,7 @@
 import { InMemorySolicitationRepository, IRepositorySolicitation } from '@/repositories/inMemory/inmemory-solicitation-repository'
 import IUseCase from '@/usecases/iusecase'
+import CreateSolicitation from '../createSolicitation/create-solicitation'
+import CreateSolicitationInput from '../createSolicitation/create-solicitation-input'
 
 type ConsultProcessingInput = {
   solicitationID: string
@@ -30,10 +32,16 @@ class ConsultProcessing implements IUseCase<ConsultProcessingInput,ConsultProces
 describe('Use Case - Consultar Processamento', () => {
   it('deveria retornar o calculo da solicitação', async () => {
     const solicitationCost = 1000
+    const createSolicitationInput: CreateSolicitationInput = {
+      title: "Reparo jardim",
+      cost: solicitationCost
+    }
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const createSolicitation = new CreateSolicitation(inMemorySolicitationRepository)
+    await createSolicitation.perform(createSolicitationInput)
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
-    const input = { solicitationID: '0' }
-    const output = await sut.perform(input)
+    const consultProcessingInput = { solicitationID: '0' }
+    const output = await sut.perform(consultProcessingInput)
     expect(output.solicitationCalculationResult).toBe(solicitationCost)
   })
 
