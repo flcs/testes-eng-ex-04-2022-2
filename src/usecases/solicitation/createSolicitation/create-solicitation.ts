@@ -29,10 +29,9 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
 
   private isInputValid(input: CreateSolicitationInput): boolean {
     const { title } = input
-    if((title.trim()).length === 0) return false
-    if((title.trim()).length <= 3) return false
-    if(!title.trim().match(/[A-z]/g)) return false
-    return true
+    const isTitleLengthGreaterThanThree = title.trim().length > 3
+    const titleContainsAtLeastOneLetter = Boolean(title.trim().match(/[A-z]/g))
+    return isTitleLengthGreaterThanThree && titleContainsAtLeastOneLetter
   }
 }
 
