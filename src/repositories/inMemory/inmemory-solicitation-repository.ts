@@ -1,10 +1,11 @@
 import Solicitation from '@/entities/solicitation/solicitation'
-import { IRepositoryCount, IRepositoryCreate } from '../irepository'
+import { IRepositoryCount, IRepositoryCreate, IRepositoryFindById } from '../irepository'
 
 export interface IRepositorySolicitation
   extends
     IRepositoryCreate<Solicitation>,
-    IRepositoryCount<Solicitation>
+    IRepositoryCount<Solicitation>,
+    IRepositoryFindById<Solicitation>
 {}
 
 export class InMemorySolicitationRepository implements IRepositorySolicitation {
@@ -16,5 +17,9 @@ export class InMemorySolicitationRepository implements IRepositorySolicitation {
 
   async count(): Promise<number> {
     return await this.solicitationList.length
+  }
+
+  async findById(id: string): Promise<Solicitation | undefined> {
+    return this.solicitationList.find(solicitation => solicitation.getID() === id)
   }
 }

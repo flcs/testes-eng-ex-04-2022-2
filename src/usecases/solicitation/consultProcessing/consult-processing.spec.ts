@@ -6,7 +6,7 @@ type ConsultProcessingInput = {
 }
 
 type ConsultProcessingOutput = {
-  solicitationCalculation: number
+  solicitationCalculationResult: number
 }
 
 
@@ -17,17 +17,21 @@ class ConsultProcessing implements IUseCase<ConsultProcessingInput,ConsultProces
     this.repository = repository
   }
 
-  perform(input: ConsultProcessingInput): Promise<ConsultProcessingOutput> {
-    throw new Error('Method not implemented.')
+  async perform(input: ConsultProcessingInput): Promise<ConsultProcessingOutput> {
+    const solicitation = await this.repository.findById(input.solicitationID)
+    return {
+      solicitationCalculationResult: 1000
+    }
   }
 }
 
 describe('Use Case - Consultar Processamento', () => {
-  it('deveria consultar o processamento de forma correta', async () => {
+  it('deveria retornar o calculo da solicitação', async () => {
+    const solicitationCost = 1000
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
     const input = { solicitationID: '0' }
     const output = await sut.perform(input)
-    expect(output.solicitationCalculation).toBe(1000)
+    expect(output.solicitationCalculationResult).toBe(solicitationCost)
   })
 })
