@@ -7,11 +7,11 @@ class Solicitation {
   private status: SolicitationStatus
   private cost: number
 
-  constructor(id: string, title: string, createdAt: Date, status: SolicitationStatus, cost: number) {
+  constructor(id: string, title: string, createdAt: Date, cost: number) {
     this.id = id
     this.title = title
     this.createdAt = createdAt
-    this.status = status
+    this.status = 'Opened'
     this.cost = cost
   }
 

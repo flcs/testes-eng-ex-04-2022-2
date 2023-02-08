@@ -16,8 +16,7 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
     if(!this.isInputValid(input)) throw new Error("Invalid input")
     const solicitationID = (await this.repository.count()).toString()
     const createdAt = new Date()
-    const status: SolicitationStatus = 'Opened'
-    const solicitation = new Solicitation(solicitationID, input.title, createdAt, status, input.cost)
+    const solicitation = new Solicitation(solicitationID, input.title, createdAt, input.cost)
     await this.repository.create(solicitation)
     return {
       id: solicitation.getID(),
