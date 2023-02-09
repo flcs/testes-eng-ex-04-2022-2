@@ -5,12 +5,14 @@ class Solicitation {
   private title: string
   private createdAt: Date
   private status: SolicitationStatus
+  private cost: number
 
-  constructor(id: string, title: string, createdAt: Date, status: SolicitationStatus) {
+  constructor(id: string, title: string, createdAt: Date, cost: number) {
     this.id = id
     this.title = title
     this.createdAt = createdAt
-    this.status = status
+    this.status = 'Opened'
+    this.cost = cost
   }
 
   getID(): string {
@@ -27,6 +29,14 @@ class Solicitation {
 
   getStatus(): SolicitationStatus {
     return this.status
+  }
+
+  getCost(): number {
+    return this.cost
+  }
+
+  finishSolicitation(): void {
+    this.status = 'Finished'
   }
 }
 
