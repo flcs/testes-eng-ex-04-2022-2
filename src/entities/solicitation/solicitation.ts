@@ -8,7 +8,7 @@ class Solicitation {
   private cost: number
 
   constructor(id: string, title: string, createdAt: Date, cost: number) {
-    if(!this.validate(title)) throw new Error("Invalid input")
+    if(!this.validate(title, cost)) throw new Error("Invalid input")
     this.id = id
     this.title = title
     this.createdAt = createdAt
@@ -40,10 +40,11 @@ class Solicitation {
     this.status = 'Finished'
   }
 
-  private validate(title: string): boolean {
+  private validate(title: string, cost: number): boolean {
     const isTitleLengthGreaterThanThree = title.trim().length > 3
     const titleContainsAtLeastOneLetter = Boolean(title.trim().match(/[A-z]/g))
-    return isTitleLengthGreaterThanThree && titleContainsAtLeastOneLetter
+    const isCostGreaterThanZero = cost > 0
+    return isTitleLengthGreaterThanThree && titleContainsAtLeastOneLetter && isCostGreaterThanZero
   }
 }
 
