@@ -13,7 +13,6 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
   }
 
   async perform(input: CreateSolicitationInput): Promise<CreateSolicitationOutput> {
-    if(!this.isInputValid(input)) throw new Error("Invalid input")
     const solicitationID = (await this.repository.count()).toString()
     const createdAt = new Date()
     const solicitation = new Solicitation(solicitationID, input.title, createdAt, input.cost)
@@ -24,13 +23,6 @@ class CreateSolicitation implements IUseCase<CreateSolicitationInput,CreateSolic
       createdAt: solicitation.getCreatedAt(),
       status: solicitation.getStatus()
     }
-  }
-
-  private isInputValid(input: CreateSolicitationInput): boolean {
-    const { title } = input
-    const isTitleLengthGreaterThanThree = title.trim().length > 3
-    const titleContainsAtLeastOneLetter = Boolean(title.trim().match(/[A-z]/g))
-    return isTitleLengthGreaterThanThree && titleContainsAtLeastOneLetter
   }
 }
 
