@@ -6,7 +6,7 @@ interface IController<RequestData> {
   handle(request: RequestData): Promise<ResponseData>
 }
 
-type CreateSolicitationRequest = {
+type CreateSolicitationRequestData = {
   title: string
   cost: number
 }
@@ -16,11 +16,14 @@ type ResponseData = {
   body: any
 }
 
-class CreateSolicitationController implements IController<CreateSolicitationRequest> {
+class CreateSolicitationController implements IController<CreateSolicitationRequestData> {
   constructor(private readonly createSolictitationUseCase: CreateSolicitation){}
 
-  async handle(request: CreateSolicitationRequest): Promise<ResponseData> {
-    throw new Error('Method not implemented.')
+  async handle(request: CreateSolicitationRequestData): Promise<ResponseData> {
+    return {
+      statusCode: 201,
+      body: {}
+    }
   }
 }
 
