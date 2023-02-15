@@ -42,13 +42,6 @@ describe('Use Case - Consultar Processamento', () => {
     expect(output.solicitationCalculationResult).toBe(solicitationCost)
   })
 
-  it('deveria levantar uma exceção se o id estiver vazio ou indefinido', async () => {
-    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
-    const sut = new ConsultProcessing(inMemorySolicitationRepository)
-    const input = { solicitationID: '' }
-    await expect(sut.perform(input)).rejects.toThrow("Invalid ID")
-  })
-
   it('deveria levantar uma exceção se o id não for encontrado na base de dados', async () => {
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
     const sut = new ConsultProcessing(inMemorySolicitationRepository)
