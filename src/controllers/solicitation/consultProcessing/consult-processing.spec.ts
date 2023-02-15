@@ -1,5 +1,6 @@
 import { ResourceNotFound } from '@/controllers/errors'
 import { IController, ResponseData } from '@/controllers/icontroller'
+import Solicitation from '@/entities/solicitation/solicitation'
 import { InMemorySolicitationRepository } from '@/repositories/inMemory/inmemory-solicitation-repository'
 import ConsultProcessing from '@/usecases/solicitation/consultProcessing/consult-processing'
 
@@ -15,7 +16,7 @@ class ConsultProcessingController implements IController<ContrultProcessingReque
       const input = { solicitationID: request.solicitationID }
       const output = await this.consultProcessingUseCase.perform(input)
       return { statusCode: 200, body: { ...output } }
-    } catch (error) {
+    } catch (error) {      
       if (error instanceof ResourceNotFound) {
         return { statusCode: 404, body: { message: error.message } }
       }
@@ -25,8 +26,12 @@ class ConsultProcessingController implements IController<ContrultProcessingReque
 }
 
 describe('Controller - Consultar Processamento', () => {
+
   it('deveria consultar corretamente uma solicitação', async () => {
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const solicitation = new Solicitation('0','teste',new Date, 1000)
+    solicitation.finishSolicitation()
+    inMemorySolicitationRepository.create(solicitation)
     const consultProcessingUseCase = new ConsultProcessing(inMemorySolicitationRepository)
     const sut = new ConsultProcessingController(consultProcessingUseCase)
     const request = { solicitationID: '0' }
@@ -38,7 +43,7 @@ describe('Controller - Consultar Processamento', () => {
     const inMemorySolicitationRepository = new InMemorySolicitationRepository()
     const consultProcessingUseCase = new ConsultProcessing(inMemorySolicitationRepository)
     const sut = new ConsultProcessingController(consultProcessingUseCase)
-    const request = { solicitationID: '0' }
+    const request = { solicitationID: '50' }
     const response = await sut.handle(request)
     expect(response.statusCode).toBe(404)
   })
