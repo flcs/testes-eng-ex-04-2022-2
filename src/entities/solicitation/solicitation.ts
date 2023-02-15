@@ -1,4 +1,4 @@
-import { InvalidInputError } from '@/controllers/solicitation/createSolicitation/errors'
+import { InvalidInputError } from '@/controllers/errors'
 import SolicitationStatus from './solicitation-status'
 class Solicitation {
   private id: string
