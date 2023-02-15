@@ -5,11 +5,13 @@
 - Verificar se o estado é solicitado
 - Mudar o estado para aceito
 
-## ID não encontrado
+## ID da solicitaçao não encontrado
+- ok
 
 
 ## Estado não é solicitado
 
-## Erro ao gravar
+## Gerente não encontrado
+- ok
 
 

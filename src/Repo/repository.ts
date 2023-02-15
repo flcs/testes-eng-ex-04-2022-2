@@ -9,6 +9,8 @@ export interface IRepository{
     AddEmployee(employeeID:number):void;
     SetEmployeeOccupied(employeeID:number,isOccupied:boolean):boolean;
     FindEmployeeStatus(employeeID:number):boolean|undefined;
+    AddManager(managerID: number): void;
+    CheckManager(managerID: number): boolean;
 }
 
 class fakeRepoEmployee{
@@ -24,10 +26,12 @@ export class FakeRepo implements IRepository{
     
     servicesList:Array<string>;
     employeeList:Array<fakeRepoEmployee>;
+    managerList:Array<Number>
     
     constructor(){
         this.servicesList = new Array<string>();
         this.employeeList = new Array<fakeRepoEmployee>;
+        this.managerList = new Array<Number>;
     }
 
     Find(serviceID:number): string|undefined {       
@@ -84,5 +88,14 @@ export class FakeRepo implements IRepository{
         if(employee == undefined) return false;        
         employee.isOccupied = isOccupied;
         return true;
+    }
+
+    AddManager(managerID: number): void {
+        this.managerList.push(managerID);
+    }
+
+    CheckManager(managerID: number): boolean {
+        return (this.managerList.includes(managerID))
+
     }
 }
