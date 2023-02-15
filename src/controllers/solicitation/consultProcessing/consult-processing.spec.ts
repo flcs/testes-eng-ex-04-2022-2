@@ -1,4 +1,4 @@
-import { ResourceNotFound } from '@/controllers/errors'
+import { InvalidInputError, ResourceNotFound } from '@/controllers/errors'
 import { IController, ResponseData } from '@/controllers/icontroller'
 import Solicitation from '@/entities/solicitation/solicitation'
 import { InMemorySolicitationRepository } from '@/repositories/inMemory/inmemory-solicitation-repository'
@@ -14,9 +14,13 @@ class ConsultProcessingController implements IController<ContrultProcessingReque
   async handle(request: ContrultProcessingRequest): Promise<ResponseData> {
     try {
       const input = { solicitationID: request.solicitationID }
+      if(input.solicitationID.length === 0) throw new InvalidInputError("ID cannot be empty")
       const output = await this.consultProcessingUseCase.perform(input)
       return { statusCode: 200, body: { ...output } }
-    } catch (error) {      
+    } catch (error) { 
+      if (error instanceof InvalidInputError) {
+        return { statusCode: 401, body: { message: error.message } }
+      }     
       if (error instanceof ResourceNotFound) {
         return { statusCode: 404, body: { message: error.message } }
       }
@@ -37,6 +41,15 @@ describe('Controller - Consultar Processamento', () => {
     const request = { solicitationID: '0' }
     const response = await sut.handle(request)
     expect(response.statusCode).toBe(200)
+  })
+
+  it('deveria retornar 401 se id não for valido', async () => {
+    const inMemorySolicitationRepository = new InMemorySolicitationRepository()
+    const consultProcessingUseCase = new ConsultProcessing(inMemorySolicitationRepository)
+    const sut = new ConsultProcessingController(consultProcessingUseCase)
+    const request = { solicitationID: '' }
+    const response = await sut.handle(request)
+    expect(response.statusCode).toBe(401)
   })
 
   it('deveria retornar 404 se solicitação não for encontrada', async () => {
