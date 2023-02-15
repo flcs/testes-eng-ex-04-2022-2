@@ -1,5 +1,4 @@
 import Solicitation from '@/entities/solicitation/solicitation'
-import SolicitationStatus from '@/entities/solicitation/solicitation-status'
 import { IRepositorySolicitation } from '@/repositories/inMemory/inmemory-solicitation-repository'
 import IUseCase from '@/usecases/iusecase'
 import CreateSolicitationInput from './create-solicitation-input'
