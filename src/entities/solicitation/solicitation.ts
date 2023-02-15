@@ -1,5 +1,5 @@
+import { InvalidInputError } from '@/controllers/solicitation/createSolicitation/errors'
 import SolicitationStatus from './solicitation-status'
-
 class Solicitation {
   private id: string
   private title: string
@@ -8,7 +8,7 @@ class Solicitation {
   private cost: number
 
   constructor(id: string, title: string, createdAt: Date, cost: number) {
-    if(!this.validate(title, cost)) throw new Error("Invalid input")
+    if (!this.validate(title, cost)) throw new InvalidInputError("Invalid input")
     this.id = id
     this.title = title
     this.createdAt = createdAt
